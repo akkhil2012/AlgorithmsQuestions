@@ -1,0 +1,45 @@
+//https://leetcode.ca/2017-11-26-727-Minimum-Window-Subsequence/
+
+public class MinimumWinsdwSubSequence {
+
+    public static void main(String args[]){
+
+
+    }
+
+    //S = "abcdebdde", T = "bde"
+    private String findMin(String s,String T){
+       int start=0,j=0,n=s.length(),min = Integer.MAX_VALUE;
+       int tIndex=0,end=s.length()-1,sIndex=0;
+
+       while(j<n){
+           if(s.charAt(j)==T.charAt(tIndex)){
+                tIndex++;
+           }
+           if(tIndex==T.length()){
+               int rightIndex = j;
+               tIndex--;
+               while(tIndex>=0){
+                    if(s.charAt(j)==T.charAt(tIndex)){
+                        tIndex--;
+                    }
+                    j--;
+               }
+               j++;
+               int lastMin = end-start;
+               if(rightIndex-start<lastMin){
+                   end = rightIndex;
+                   start = sIndex;
+               }
+                tIndex=0;
+           }
+           sIndex++;
+       }
+
+        int windowSize = end - start + 1;
+        if (windowSize == n)
+            return "";
+        else
+            return s.substring(start, start + windowSize);
+    }
+}
