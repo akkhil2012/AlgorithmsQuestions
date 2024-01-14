@@ -1,0 +1,24 @@
+//https://walkccc.me/LeetCode/problems/1153/#__tabbed_1_2
+
+public class canTransformStrings {
+
+    public static void main(String args[]){
+        //new MinimumWinsdwSubSequence().canTransform();
+        System.out.println(" are equals:: " + new MinimumWinsdwSubSequence().canTransform());
+
+    }
+     public boolean canTransform(){
+        String str1 = "aabcc", str2 = "ccdee";
+         Map<Character,Character>
+                  map = new HashMap<>();
+         for(int i=0;i<str2.length();i++){
+             char first = str1.charAt(i);
+             char second = str2.charAt(i);
+             if(map.getOrDefault(first,second)!=second){
+                return false;
+             }
+             map.put(first,second);
+         }
+        return new HashSet<>(map.values()).size()<26;
+     }
+}
