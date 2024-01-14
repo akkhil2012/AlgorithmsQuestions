@@ -1,0 +1,36 @@
+
+//https://leetcode.com/problems/find-two-non-overlapping-sub-arrays-each-with-target-sum/
+
+public class MinimumSumLengths {
+
+    public static void main(String args[]){
+        //new MinimumWinsdwSubSequence().canTransform();
+        System.out.println(" are equals:: " + new MinimumWinsdwSubSequence().canTransform());
+
+    }
+
+
+
+    public int minSumOfLengths(int[] arr, int target) {
+        Map<Integer,Integer> map = new HashMap<>();
+        int res=Integer.MAX_VALUE,i=0,j=0,n=arr.length,lSize = Integer.MAX_VALUE;
+        int sum=0;
+        map.put(0,-1);
+        for(;i<n;i++){
+            sum +=arr[i];
+            map.put(sum,i);
+        }
+
+        sum=0;
+        for(i=0;i<n;i++){
+            sum +=arr[i];
+            if(map.containsKey(sum-target)){
+                lSize = Math.min(lSize,i-map.get(sum-target));
+            }
+
+           if(map.containsKey(sum+target) && lSize!=Integer.MAX_VALUE){
+               res = Math.min(res,map.get(sum+target)-i+lSize);
+           }
+        }
+        return res==Integer.MAX_VALUE?-1:res;
+    }
