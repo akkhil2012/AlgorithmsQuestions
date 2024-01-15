@@ -1,0 +1,33 @@
+//https://leetcode.com/problems/time-needed-to-inform-all-employees/solutions/532593/java-bfs/
+
+
+public int numOfMinutes(int n, int headID, int[] manager, int[] informTime) {
+        Map<Integer, Set<Integer>> graph = new HashMap<>();
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < n; i++) {
+            graph.putIfAbsent(manager[i], new HashSet<>());
+            graph.get(manager[i]).add(i);
+        }
+
+        Queue<int[]> queue = new ArrayDeque<>();
+        queue.add(new int[]{-1, 0});
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                int[] curr = queue.poll();
+                max = Math.max(max, curr[1]);
+                if (!graph.containsKey(curr[0]))
+                    continue;
+                for (int ne : graph.get(curr[0])) {
+                    queue.offer(new int[]{ne, curr[1] + informTime[ne]});
+                }
+
+
+            }
+
+
+        }
+        return max;
+
+    }
