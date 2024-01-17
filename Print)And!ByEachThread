@@ -1,0 +1,65 @@
+package org.example;
+
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class PrintOddEvenUsingThreadsInOrdwr {
+    public static void main(String args[]){
+        Lock lock = new ReentrantLock();
+        Runnable first = new Resource(lock);
+        Runnable sec = new Resource(lock);
+        new Thread(first,"firstThread").start();
+        new Thread(sec,"SecondThread").start();
+    }
+}
+
+class Resource implements  Runnable{
+    Lock lock;
+    static int count =1;
+    public Resource(Lock lock) {
+        this.lock = lock;
+    }
+
+    @Override
+    public void run() {
+
+        while(count<100) {
+
+            if (count % 2 == 0 && Thread.currentThread().getName().equals("firstThread")) {
+              //  lock.lock();
+                synchronized (lock) {
+                    System.out.println("Thread Name : " + Thread.currentThread().getName() + " value :" + 0);
+                    count++;
+
+                    try {
+                        lock.wait();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+              //  lock.unlock();
+            }
+
+
+            if (count % 2 != 0 && Thread.currentThread().getName().equals("SecondThread")) {
+              //  lock.lock();
+                synchronized (lock) {
+                    System.out.println("Thread Name : " + Thread.currentThread().getName() + " value :" + 1);
+                    count++;
+
+                    lock.notify();
+                }
+                //lock.unlock();
+            }
+        }
+
+
+
+
+
+
+
+
+
+    }
+}
